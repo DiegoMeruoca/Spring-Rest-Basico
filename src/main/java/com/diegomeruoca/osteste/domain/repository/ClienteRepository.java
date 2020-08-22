@@ -11,4 +11,5 @@ import com.diegomeruoca.osteste.domain.model.Cliente;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 	List<Cliente> findByNome(String nome); //Filtrar por nome
 	List<Cliente> findByNomeContaining(String nome);//Filtar por nome que contenha ...
-}
+	Cliente findByEmail(String email); //Retorna um cliente com base no email
+} 

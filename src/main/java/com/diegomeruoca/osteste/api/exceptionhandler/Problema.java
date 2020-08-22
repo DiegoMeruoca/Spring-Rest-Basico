@@ -3,6 +3,10 @@ package com.diegomeruoca.osteste.api.exceptionhandler;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)//Quando for transformar o obj em json só adicionará campos não nulos
 public class Problema {
 	
 	private Integer status;

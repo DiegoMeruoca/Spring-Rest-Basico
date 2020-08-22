@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.diegomeruoca.osteste.domain.model.Cliente;
 import com.diegomeruoca.osteste.domain.repository.ClienteRepository;
+import com.diegomeruoca.osteste.domain.service.CadastroClienteService;
 
 @RestController
 @RequestMapping("/clientes") //Define a URL que o controlador responde
@@ -29,6 +30,9 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private CadastroClienteService cadastroClienteService;
 	
 	@GetMapping //Executado ao dar Request GET n URL padrão
 	public List<Cliente> listar() {
@@ -50,7 +54,7 @@ public class ClienteController {
 	@PostMapping //Executado ao dar Request POST na URL padrão
 	@ResponseStatus(HttpStatus.CREATED)//Pra responder o status 201 - Created
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {//@RequestBody transforma o json vondo no body em um obj Java
-		return clienteRepository.save(cliente);
+		return cadastroClienteService.salvar(cliente);
 	}
 	
 	@PutMapping("/{clienteId}") //Executado ao dar Request PUT na URL padrão + /{id}
@@ -60,7 +64,7 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 		}
 		cliente.setId(clienteId);//Adiciona o is no obj
-		cliente = clienteRepository.save(cliente);
+		cliente = cadastroClienteService.salvar(cliente);
 		return ResponseEntity.ok(cliente);
 	}
 	
@@ -69,7 +73,7 @@ public class ClienteController {
 		if(!clienteRepository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
 		}
-		clienteRepository.deleteById(clienteId);
+		cadastroClienteService.excluir(clienteId);
 		return ResponseEntity.noContent().build();//Retorna noContent (204)
 	}
 	
