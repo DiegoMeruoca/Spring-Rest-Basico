@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,12 +49,12 @@ public class ClienteController {
 	
 	@PostMapping //Executado ao dar Request POST na URL padrão
 	@ResponseStatus(HttpStatus.CREATED)//Pra responder o status 201 - Created
-	public Cliente adicionar(@RequestBody Cliente cliente) {//@RequestBody transforma o json vondo no body em um obj Java
+	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {//@RequestBody transforma o json vondo no body em um obj Java
 		return clienteRepository.save(cliente);
 	}
 	
 	@PutMapping("/{clienteId}") //Executado ao dar Request PUT na URL padrão + /{id}
-	public ResponseEntity<Cliente> batualizar(@PathVariable Long clienteId,
+	public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteId,
 			@RequestBody Cliente cliente){
 		if(!clienteRepository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
