@@ -5,12 +5,12 @@ import java.time.OffsetDateTime;
 
 import com.diegomeruoca.osteste.domain.model.StatusOredemServico;
 
-/*Esta classe é um modelo de representação, nos pemit separar o Representation
+/*Esta classe é um modelo de representação, nos pemite separar o Representation
 Model do Domain Model, permitindo que caso façamos alguma alteração não quebre 
 a API prejudicando os consumidores*/
 public class OrdemServicoModel {
 	private Long Id;
-	private String nomeCliente;
+	private ClienteResumoModel cliente;
 	private String descricao;
 	private BigDecimal preco;
 	private StatusOredemServico status;
@@ -22,12 +22,6 @@ public class OrdemServicoModel {
 	}
 	public void setId(Long id) {
 		Id = id;
-	}
-	public String getNomeCliente() {
-		return nomeCliente;
-	}
-	public void setNomeCliente(String nomeCliente) {
-		this.nomeCliente = nomeCliente;
 	}
 	public String getDescricao() {
 		return descricao;
@@ -58,6 +52,12 @@ public class OrdemServicoModel {
 	}
 	public void setDataFinalização(OffsetDateTime dataFinalização) {
 		this.dataFinalização = dataFinalização;
+	}
+	public ClienteResumoModel getCliente() {
+		return cliente;
+	}
+	public void setCliente(ClienteResumoModel cliente) {
+		this.cliente = cliente;
 	}
 	
 }

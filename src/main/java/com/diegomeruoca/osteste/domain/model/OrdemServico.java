@@ -1,8 +1,9 @@
 package com.diegomeruoca.osteste.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,13 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.lang.NonNull;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import javax.persistence.OneToMany;
+import com.diegomeruoca.osteste.api.model.Comentario;
+import com.diegomeruoca.osteste.domain.exception.NegocioException;
 
 @Entity
 public class OrdemServico {
@@ -26,25 +23,17 @@ public class OrdemServico {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NonNull
 	@ManyToOne
 	private Cliente cliente;
-	
-	@NotBlank
 	private String descricao;
-	
-	@NonNull
 	private BigDecimal preco;
-	
-	@JsonProperty(access = Access.READ_ONLY)
 	@Enumerated(EnumType.STRING)//Colocando o Enum como String pra puxar o texto e não a numeração
 	private StatusOredemServico status;
-	
-	@JsonProperty(access = Access.READ_ONLY)
 	private OffsetDateTime dataAbertura;
-	
-	@JsonProperty(access = Access.READ_ONLY)
 	private OffsetDateTime dataFinalizacao;
+	
+	@OneToMany(mappedBy = "ordemServico")
+	private List<Comentario> comentarios = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -89,6 +78,12 @@ public class OrdemServico {
 		this.dataFinalizacao = dataFinalizacao;
 	}
 	
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -111,6 +106,19 @@ public class OrdemServico {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public boolean naoPodeSerFinalizada() {
+		return !StatusOredemServico.ABERTA.equals(getStatus());
+	}
+	
+	public void finalizar() {
+		if(naoPodeSerFinalizada()){
+			throw new NegocioException("A ordem de serviço não pode ser finalizada!");
+		};
+		setStatus(StatusOredemServico.FINALIZADA);
+		setDataFinalizacao(OffsetDateTime.now());
+		
 	}
 	
 }

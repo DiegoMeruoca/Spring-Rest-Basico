@@ -1,11 +1,7 @@
 package com.diegomeruoca.osteste.api.exceptionhandler;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +18,6 @@ import com.diegomeruoca.osteste.domain.exception.NegocioException;
 @ControllerAdvice //Defique este componente do Spring que sera chamado pro tratamento de exceptions de todos controllers
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
-	@Autowired
-	private MessageSource messageSource;
 	
 	@ExceptionHandler(NegocioException.class)
 	public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request){
